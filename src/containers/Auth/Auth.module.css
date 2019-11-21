@@ -1,0 +1,15 @@
+.Form {
+    width: 70%;
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 3px #ccc;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+@media (min-width: 600px) {
+    .Form {
+        width: 500px;
+    }
+}

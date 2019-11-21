@@ -1,0 +1,16 @@
+.GoBack {
+    position: fixed;
+    top: 95px;
+    left: 40px;
+    color: #3dabca;
+    cursor: pointer;
+}
+
+.GoBack svg {
+    margin-right: 10px;
+}
+
+.GoBack:active,
+.GoBack:hover {
+    color: #61dafb;
+}

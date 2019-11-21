@@ -1,0 +1,22 @@
+.NewsItem_preview {
+    width: 80%;
+    padding: 10px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    box-shadow: 0 2px 3px #ccc;
+}
+
+.NewsItem_full {
+    width: 80%;
+    /* padding: 10px; */
+    margin: 20px auto;
+    box-sizing: border-box;
+    /* box-shadow: 0 2px 3px #ccc; */
+}
+
+@media (min-width: 1000px) {
+    .NewsItem_preview,
+    .NewsItem_full {
+        width: 800px;
+    }
+}
