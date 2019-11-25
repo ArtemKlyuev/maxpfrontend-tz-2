@@ -1,0 +1,17 @@
+.ErrorBar {
+    position: absolute;
+    top: 75px;
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-100vh);
+    background-color: #ffbaba;
+    color: #d8000c;
+    transition: all 0.3s ease-out;
+}
+
+.show {
+    transform: translateY(0);
+}
