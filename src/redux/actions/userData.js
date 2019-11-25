@@ -1,3 +1,4 @@
+import axios from '../../shared/axiosInstance';
 import * as actionTypes from './actionTypes';
 
 const fetchUserDataStart = () => ({
@@ -14,24 +15,22 @@ const fetchUserDataFail = (error) => ({
     error
 });
 
-export const fetchUserData = () => {
-    return (dispatch) => {
-        dispatch(fetchUserDataStart());
-        fetch('https://jsonplaceholder.typicode.com/users/1')
-            .then((res) => {
-                if (!res.ok) {
-                    console.log('res.statusText', res);
-                    throw new Error(res.statusText);
-                }
-                return res.json();
-            })
-            .then((data) => {
-                console.log('data', data);
-                dispatch(fetchUserDataSuccess(data));
-            })
-            .catch((err) => {
-                console.log('user data error', err);
-                dispatch(fetchUserDataFail(err));
-            });
-    };
+export const fetchUserData = () => async (dispatch, getState) => {
+    dispatch(fetchUserDataStart());
+    const { userId } = getState().auth;
+
+    try {
+        const response = await axios.get(`/user-info/${userId}`);
+        const { status, data, social } = response.data;
+
+        console.log('userData profile', response);
+        if (status !== 'ok') {
+            throw new Error(response.message);
+        }
+
+        dispatch(fetchUserDataSuccess({ ...data, ...social }));
+    } catch (error) {
+        console.log('user data error', error);
+        dispatch(fetchUserDataFail(error));
+    }
 };

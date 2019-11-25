@@ -53,7 +53,6 @@ class Layout extends React.Component {
                 />
 
                 {this.state.isMobile && sideDrawer}
-
                 <main className={classes.Content}>{this.props.children}</main>
             </React.Fragment>
         );

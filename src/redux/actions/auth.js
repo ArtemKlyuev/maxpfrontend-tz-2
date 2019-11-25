@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import axios from '../../shared/axiosInstance';
 
 export const authStart = () => ({ type: actionTypes.AUTH_START });
 
@@ -14,32 +15,23 @@ export const auth = (email, password) => async (dispatch) => {
     try {
         dispatch(authStart());
 
-        const url =
-            'https://mysterious-reef-29460.herokuapp.com/api/v1/validate';
+        const authData = { email, password };
 
-        const data = { email, password };
+        console.log('authData', authData);
 
-        console.log('authData', data);
+        const response = await axios.post('/validate', authData);
 
-        const authData = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json;charset=utf-8' },
-            body: JSON.stringify(data)
-        };
+        console.log('resData', response);
 
-        const res = await fetch(url, authData);
-        const resData = await res.json();
+        const { status, data } = response.data;
 
-        console.log('resData', resData);
-
-        if (resData.status === 'ok') {
-            dispatch(authSuccess(resData.data.userId));
-        } else {
-            throw new Error(resData.message);
+        if (status !== 'ok') {
+            throw new Error(response.message);
         }
+        dispatch(authSuccess(data.id));
     } catch (e) {
         console.error('Auth error', e);
-        dispatch(authFail(e));
+        dispatch(authFail());
     }
 };
 

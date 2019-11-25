@@ -1,11 +1,14 @@
 import React from 'react';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { updateObject, checkValidity } from '../../shared/utility';
+import axios from '../../shared/axiosInstance';
 import * as actions from '../../redux/actions/auth';
 
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
+import Preloader from '../../components/UI/Preloader/Preloader';
 import classes from './Auth.module.css';
 
 class Auth extends React.Component {
@@ -43,14 +46,17 @@ class Auth extends React.Component {
     };
 
     componentDidMount() {
-        console.log('-----> auth cpd');
         this.props.onSetAuthRedirectPath('/profile');
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.error !== this.props.error) {
-            console.log('setState');
-            this.setState((prevState) => {return {controls:  ...prevState.controls}});
+            const { controls } = this.state;
+            const updatedControls = updateObject(controls, {
+                password: updateObject(controls.password, { value: '' })
+            });
+
+            this.setState({ controls: updatedControls });
         }
     }
 
@@ -82,6 +88,7 @@ class Auth extends React.Component {
     render() {
         const formEls = [];
         const { controls } = this.state;
+        const { isAuth, loading, authRedirectPath } = this.props;
 
         Object.keys(controls).forEach((el) => {
             const { type, placeholder } = controls[el].elementConfig;
@@ -107,15 +114,9 @@ class Auth extends React.Component {
 
         let redirect = null;
 
-        if (this.props.isAuth) {
-            redirect = <Redirect to={this.props.authRedirectPath} />;
+        if (isAuth) {
+            redirect = <Redirect to={authRedirectPath} />;
         }
-
-        const errorMsg = (
-            <p style={{ color: 'red' }}>
-                Имя пользователя или пароль введены не верно
-            </p>
-        );
 
         return (
             <React.Fragment>
@@ -125,8 +126,7 @@ class Auth extends React.Component {
                     onSubmit={(e) => this.sumbitHandler(e)}
                 >
                     {formEls}
-                    {this.props.error && errorMsg}
-                    <Button>Войти</Button>
+                    {loading ? <Preloader /> : <Button>Войти</Button>}
                 </form>
             </React.Fragment>
         );
@@ -145,4 +145,7 @@ const mapStateToProps = (state) => ({
     authRedirectPath: state.auth.authRedirectPath
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withErrorHandler(Auth, axios));

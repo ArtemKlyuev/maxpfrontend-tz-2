@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import * as actions from '../../redux/actions/userData';
 import UserProfile from '../../components/UserProfile/UserProfile';
+import Preloader from '../UI/Preloader/Preloader';
 
 class Profile extends React.Component {
     componentDidMount() {
-        console.log('kek');
-
-        if (this.props.isAuth) {
+        const { userData, isAuth } = this.props;
+        if (isAuth && !userData) {
             this.props.onFetchUserData();
         }
     }
@@ -19,11 +19,7 @@ class Profile extends React.Component {
         let userProfile = <UserProfile {...userData} />;
 
         if (loading) {
-            userProfile = (
-                <p style={{ textAlign: 'center' }}>
-                    Идёт загрузка данных, пожалуйста, подождите
-                </p>
-            );
+            userProfile = <Preloader />;
         }
 
         console.log('this.props', this.props);
@@ -35,13 +31,7 @@ class Profile extends React.Component {
         return (
             <React.Fragment>
                 {redirect}
-                {error ? (
-                    <p style={{ textAlign: 'center' }}>
-                        Произошла ошибка при загрузке данных
-                    </p>
-                ) : (
-                    userProfile
-                )}
+                {!error && userProfile}
             </React.Fragment>
         );
     }
@@ -58,7 +48,4 @@ const mapStateToProps = (state) => ({
     loading: state.userData.loading
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
