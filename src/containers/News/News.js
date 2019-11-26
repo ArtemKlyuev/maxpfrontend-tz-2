@@ -1,4 +1,6 @@
 import React from 'react';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../shared/axiosInstance'
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions/news';
 import NewsItem from '../../components/News/NewsItem/NewsItem';
@@ -52,4 +54,4 @@ const mapStateToProps = (state) => ({
     error: state.news.error
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(News);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(News,axios));

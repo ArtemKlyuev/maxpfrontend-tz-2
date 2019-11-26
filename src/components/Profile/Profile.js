@@ -1,4 +1,6 @@
 import React from 'react';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../shared/axiosInstance';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import * as actions from '../../redux/actions/userData';
@@ -48,4 +50,7 @@ const mapStateToProps = (state) => ({
     loading: state.userData.loading
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withErrorHandler(Profile, axios));
