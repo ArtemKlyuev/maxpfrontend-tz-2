@@ -2,14 +2,6 @@ import React from 'react';
 import classes from './ErrorBar.module.css';
 
 class ErrorBar extends React.Component {
-    componentDidMount() {
-        console.log('[ERROR BAR CDM]');
-    }
-
-    componentDidUpdate() {
-        console.log('[ERROR BAR CDU]');
-    }
-
     render() {
         const { show, children } = this.props;
         let errorClasses = [classes.ErrorBar];
