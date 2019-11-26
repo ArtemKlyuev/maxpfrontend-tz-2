@@ -1,6 +1,6 @@
 import React from 'react';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import axios from '../../shared/axiosInstance'
+import axios from '../../shared/axiosInstance';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions/news';
 import NewsItem from '../../components/News/NewsItem/NewsItem';
@@ -20,7 +20,7 @@ class News extends React.Component {
         const { news, loading, error } = this.props;
         let totalNews = <Preloader />;
 
-        if (!loading) {
+        if (!loading && !error) {
             console.log(typeof news);
             console.log('news', news);
             console.log('loading', loading);
@@ -54,4 +54,7 @@ const mapStateToProps = (state) => ({
     error: state.news.error
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(News,axios));
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withErrorHandler(News, axios));
