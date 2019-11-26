@@ -4,9 +4,7 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     news: null,
     loading: true,
-    error: false,
-    isMoreInfoClicked: false,
-    fullNewsItemToLoad: null
+    error: false
 };
 
 const fetchNewsStart = (state, action) =>
@@ -18,9 +16,6 @@ const fetchNewsFail = (state, action) =>
 const fetchNewsSuccess = (state, action) =>
     updateObject(state, { news: action.news, loading: false, error: false });
 
-const moreInfoClicked = (state, action) =>
-    updateObject(state, { fullNewsItemToLoad: action.newsItem });
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.FETCH_NEWS_START:
@@ -29,8 +24,6 @@ const reducer = (state = initialState, action) => {
             return fetchNewsSuccess(state, action);
         case actionTypes.FETCH_NEWS_FAIL:
             return fetchNewsFail(state, action);
-        case actionTypes.MORE_INFO_CLICKED:
-            return moreInfoClicked(state, action);
         default:
             return state;
     }
