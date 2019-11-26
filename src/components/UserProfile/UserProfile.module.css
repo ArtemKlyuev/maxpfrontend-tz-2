@@ -6,3 +6,18 @@
     box-shadow: 0 2px 3px #ccc;
     box-sizing: border-box;
 }
+
+.UserProfile > div:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.socialLink,
+.socialLink img {
+    display: block;
+    width: 30px;
+    height: 30px;
+}
+
+.UserProfile ul > li:not(:last-child) {
+    margin-bottom: 20px;
+}
