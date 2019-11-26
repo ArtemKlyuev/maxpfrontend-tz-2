@@ -2,33 +2,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions/news';
 import NewsItem from '../../components/News/NewsItem/NewsItem';
+import Preloader from '../../components/UI/Preloader/Preloader';
 
 class News extends React.Component {
     componentDidMount() {
-        this.props.onFetchNews();
+        const { news, onFetchNews } = this.props;
+        if (!news) {
+            onFetchNews();
+        }
+
         console.log('component did mount[this.props.news]', this.props.news);
     }
 
     render() {
         const { news, loading, error } = this.props;
-        const isNewsPreview = this.props.match.url === '/news';
-        let totalNews = (
-            <p style={{ textAlign: 'center' }}>
-                Идёт загрузка данных, пожалуйста, подождите
-            </p>
-        );
+        let totalNews = <Preloader />;
 
         if (!loading) {
             console.log(typeof news);
             console.log('news', news);
             console.log('loading', loading);
             totalNews = news.map((item, i) => (
-                <NewsItem
-                    key={item.title}
-                    isPreview={isNewsPreview}
-                    index={i + 1}
-                    {...item}
-                />
+                <NewsItem key={item.title} {...item} />
             ));
         }
 
@@ -36,12 +31,11 @@ class News extends React.Component {
 
         return (
             <React.Fragment>
-                {error ? (
+                {totalNews}
+                {news && (
                     <p style={{ textAlign: 'center' }}>
-                        Произошла ошибка при загрузке данных
+                        Всего новостей: {news.length}
                     </p>
-                ) : (
-                    totalNews
                 )}
             </React.Fragment>
         );
@@ -55,12 +49,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
     news: state.news.news,
     loading: state.news.loading,
-    error: state.news.error,
-    isMoreInfoClicked: state.news.isMoreInfoClicked,
-    fullNewsItemToLoad: state.news.fullNewsItemToLoad
+    error: state.news.error
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(News);
+export default connect(mapStateToProps, mapDispatchToProps)(News);
