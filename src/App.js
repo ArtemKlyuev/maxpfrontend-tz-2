@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from './redux/actions/auth';
 import Layout from './hoc/Layout/Layout';
 import Root from './components/Root/Root';
 import Auth from './containers/Auth/Auth';
@@ -12,10 +11,6 @@ import NewsItemPage from './components/News/NewsItemPage/NewsItemPage';
 import NotFound from './components/NotFound/NotFound';
 
 const App = (props) => {
-    useEffect(() => {
-        props.onTryAutoSignin();
-    }, []);
-
     let routes = (
         <Switch>
             <Route path="/login" component={Auth} />
@@ -47,10 +42,4 @@ const App = (props) => {
 
 const mapStateToPros = (state) => ({ isAuth: state.auth.isAuth });
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onTryAutoSignin: () => dispatch(actions.checkAuthState())
-    };
-};
-
-export default connect(mapStateToPros, mapDispatchToProps)(App);
+export default connect(mapStateToPros)(App);

@@ -5,7 +5,6 @@ export const authStart = () => ({ type: actionTypes.AUTH_START });
 
 const authSuccess = (userId) => {
     console.log('auth success triggered');
-    localStorage.setItem('isAuth', true);
     return { type: actionTypes.AUTH_SUCCESS, userId };
 };
 
@@ -36,17 +35,7 @@ export const auth = (email, password) => async (dispatch) => {
 };
 
 export const logout = () => {
-    localStorage.setItem('isAuth', false);
     return { type: actionTypes.AUTH_LOGOUT };
-};
-
-export const checkAuthState = () => (dispatch) => {
-    const isAuth = JSON.parse(localStorage.getItem('isAuth'));
-    if (!isAuth) {
-        localStorage.setItem('isAuth', false);
-    } else {
-        dispatch(authSuccess());
-    }
 };
 
 export const setAuthRedirectPath = (path) => ({

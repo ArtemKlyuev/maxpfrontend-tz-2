@@ -18,6 +18,7 @@ const fetchUserDataFail = (error) => ({
 export const fetchUserData = () => async (dispatch, getState) => {
     dispatch(fetchUserDataStart());
     const { userId } = getState().auth;
+    console.log('userdata id', userId);
 
     try {
         const response = await axios.get(`/user-info/${userId}`);
