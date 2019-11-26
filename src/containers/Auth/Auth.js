@@ -67,7 +67,7 @@ class Auth extends React.Component {
             [controlName]: updateObject(controls[controlName], {
                 value: e.currentTarget.value,
                 valid: checkValidity(
-                    controlName,
+                    e.currentTarget.value,
                     controls[controlName].validation
                 ),
                 touched: true
@@ -78,9 +78,13 @@ class Auth extends React.Component {
     };
 
     sumbitHandler = (e) => {
-        e.preventDefault();
-
         const { email, password } = this.state.controls;
+
+        if (!email.valid || !password.valid) {
+            return false;
+        }
+
+        e.preventDefault();
 
         this.props.onAuth(email.value, password.value);
     };
@@ -103,7 +107,7 @@ class Auth extends React.Component {
                     elementType={elementType}
                     value={value}
                     touched={touched}
-                    invalid={valid}
+                    valid={valid}
                     required={required}
                     changed={(e) => this.inputChangedHandler(e, el)}
                 />
@@ -126,7 +130,20 @@ class Auth extends React.Component {
                     onSubmit={(e) => this.sumbitHandler(e)}
                 >
                     {formEls}
-                    {loading ? <Preloader /> : <Button>Войти</Button>}
+                    {loading ? (
+                        <Preloader />
+                    ) : (
+                        <Button
+                            disabled={
+                                !(
+                                    controls.email.valid &&
+                                    controls.password.valid
+                                )
+                            }
+                        >
+                            Войти
+                        </Button>
+                    )}
                 </form>
             </React.Fragment>
         );
