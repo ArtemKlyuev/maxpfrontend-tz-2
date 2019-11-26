@@ -15,9 +15,16 @@ const withErrorHandler = (WrappedComponent, axios) => {
 
             const { authError, userDataError } = this.props;
 
-            const prevIsError = error || prevAuthError || prevUserDataError;
+            const prevIsError =
+                Boolean(error) || prevAuthError || prevUserDataError;
 
-            const isError = error || authError || userDataError;
+            const isError = Boolean(error) || authError || userDataError;
+
+            console.log({ error, authError, userDataError });
+
+            console.log('prevIsError', prevIsError);
+            console.log('isError', isError);
+            console.log('Boolean(error)', Boolean(error));
 
             if (prevIsError !== isError) {
                 this.setState({ showError: isError });
@@ -33,7 +40,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
                 (res) => res,
                 (error) => {
                     console.log('witherrorhandlerError', error.message);
-                    this.setState({ error });
+                    this.setState({ error: error.message, showError: true });
                     return error;
                 }
             );
@@ -53,7 +60,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
 
             switch (true) {
                 case error:
-                    message = error.message;
+                    message = error;
                     break;
                 case authError:
                     message = 'Имя пользователя или пароль введены не верно';
@@ -61,9 +68,12 @@ const withErrorHandler = (WrappedComponent, axios) => {
                 case userDataError:
                     message = 'Пользователь не найден';
                     break;
+
                 default:
                     message = '';
             }
+            console.log('errors', typeof error);
+            console.log('this.state errors', this.state);
 
             return <ErrorBar show={showError}>{message}</ErrorBar>;
         };
