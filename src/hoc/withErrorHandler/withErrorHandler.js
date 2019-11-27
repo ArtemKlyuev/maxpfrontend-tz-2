@@ -4,10 +4,10 @@ import ErrorBar from '../../components/UI/ErrorBar/ErrorBar';
 
 const withErrorHandler = (WrappedComponent, axios) => {
     class Wrapper extends Component {
-        state = { error: null, showError: false };
+        state = { generalError: null, showError: false };
 
         componentDidUpdate(prevProps) {
-            const { error } = this.state;
+            const { generalError } = this.state;
             const {
                 authError: prevAuthError,
                 userDataError: prevUserDataError
@@ -16,15 +16,11 @@ const withErrorHandler = (WrappedComponent, axios) => {
             const { authError, userDataError } = this.props;
 
             const prevIsError =
-                Boolean(error) || prevAuthError || prevUserDataError;
+                Boolean(generalError) || prevAuthError || prevUserDataError;
 
-            const isError = Boolean(error) || authError || userDataError;
+            const isError = Boolean(generalError) || authError || userDataError;
 
-            console.log({ error, authError, userDataError });
-
-            console.log('prevIsError', prevIsError);
-            console.log('isError', isError);
-            console.log('Boolean(error)', Boolean(error));
+            console.log({ generalError, authError, userDataError });
 
             if (prevIsError !== isError) {
                 this.setState({ showError: isError });
@@ -33,14 +29,17 @@ const withErrorHandler = (WrappedComponent, axios) => {
 
         componentWillMount() {
             this.reqInterceptor = axios.interceptors.request.use((req) => {
-                this.setState({ error: null });
+                this.setState({ generalError: null });
                 return req;
             });
             this.resInterceptor = axios.interceptors.response.use(
                 (res) => res,
                 (error) => {
                     console.log('witherrorhandlerError', error.message);
-                    this.setState({ error: error.message, showError: true });
+                    this.setState({
+                        gerenalError: error.message,
+                        showError: true
+                    });
                     return error;
                 }
             );
@@ -51,16 +50,16 @@ const withErrorHandler = (WrappedComponent, axios) => {
             axios.interceptors.response.eject(this.resInterceptor);
         }
 
-        showError = () => {
-            const { error, showError } = this.state;
+        showErrorMsg = () => {
+            const { gerenalError } = this.state;
             const { authError, userDataError } = this.props;
-            const errors = { error, authError, userDataError };
+            const errors = { gerenalError, authError, userDataError };
 
             let message = null;
 
             switch (true) {
-                case error:
-                    message = error;
+                case Boolean(gerenalError):
+                    message = gerenalError;
                     break;
                 case authError:
                     message = 'Имя пользователя или пароль введены не верно';
@@ -72,16 +71,15 @@ const withErrorHandler = (WrappedComponent, axios) => {
                 default:
                     message = '';
             }
-            console.log('errors', typeof error);
-            console.log('this.state errors', this.state);
 
-            return <ErrorBar show={showError}>{message}</ErrorBar>;
+            return message;
         };
 
         render() {
+            const { showError } = this.state;
             return (
                 <Fragment>
-                    {this.showError()}
+                    <ErrorBar show={showError}>{this.showErrorMsg()}</ErrorBar>
                     <WrappedComponent {...this.props} />
                 </Fragment>
             );
