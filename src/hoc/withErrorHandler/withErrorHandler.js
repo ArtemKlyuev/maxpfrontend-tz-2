@@ -53,9 +53,10 @@ const withErrorHandler = (WrappedComponent, axios) => {
         showErrorMsg = () => {
             const { gerenalError } = this.state;
             const { authError, userDataError } = this.props;
-            const errors = { gerenalError, authError, userDataError };
 
             let message = null;
+
+            //gerenalError is a string
 
             switch (true) {
                 case Boolean(gerenalError):
