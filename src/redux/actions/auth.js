@@ -4,7 +4,6 @@ import axios from '../../shared/axiosInstance';
 export const authStart = () => ({ type: actionTypes.AUTH_START });
 
 const authSuccess = (userId) => {
-    console.log('auth success triggered');
     return { type: actionTypes.AUTH_SUCCESS, userId };
 };
 
@@ -16,11 +15,7 @@ export const auth = (email, password) => async (dispatch) => {
 
         const authData = { email, password };
 
-        console.log('authData', authData);
-
         const response = await axios.post('/validate', authData);
-
-        console.log('resData', response);
 
         const { status, data } = response.data;
 

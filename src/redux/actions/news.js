@@ -17,13 +17,9 @@ export const fetchNews = () => async (dispatch) => {
         const response = await axios.get('/news');
         const { status, data } = response.data;
 
-        console.log('res news', response);
-
         if (status !== 'ok') {
             throw new Error(response.message);
         }
-
-        console.log('news data', data);
 
         dispatch(fetchNewsSuccess(data));
     } catch (error) {

@@ -12,8 +12,6 @@ class News extends React.Component {
         if (!news) {
             onFetchNews();
         }
-
-        console.log('component did mount[this.props.news]', this.props.news);
     }
 
     render() {
@@ -21,15 +19,10 @@ class News extends React.Component {
         let totalNews = <Preloader />;
 
         if (!loading && !error) {
-            console.log(typeof news);
-            console.log('news', news);
-            console.log('loading', loading);
             totalNews = news.map((item, i) => (
                 <NewsItem key={item.title} {...item} />
             ));
         }
-
-        console.log('News Props', this.props);
 
         return (
             <React.Fragment>

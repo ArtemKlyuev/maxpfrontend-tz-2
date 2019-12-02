@@ -5,7 +5,6 @@ import * as actions from '../../../redux/actions/auth';
 
 class Logout extends React.Component {
     componentDidMount() {
-        console.log('Logout');
         this.props.onLogout();
     }
     render() {

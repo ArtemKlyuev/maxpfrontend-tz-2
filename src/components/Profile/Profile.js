@@ -24,8 +24,6 @@ class Profile extends React.Component {
             userProfile = <Preloader />;
         }
 
-        console.log('this.props', this.props);
-
         if (!isAuth) {
             redirect = <Redirect to="/login" />;
         }

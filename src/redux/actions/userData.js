@@ -18,13 +18,11 @@ const fetchUserDataFail = (error) => ({
 export const fetchUserData = () => async (dispatch, getState) => {
     dispatch(fetchUserDataStart());
     const { userId } = getState().auth;
-    console.log('userdata id', userId);
 
     try {
         const response = await axios.get(`/user-info/${userId}`);
         const { status, data, social } = response.data;
 
-        console.log('userData profile', response);
         if (status !== 'ok') {
             throw new Error(response.message);
         }

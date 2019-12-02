@@ -20,8 +20,6 @@ const withErrorHandler = (WrappedComponent, axios) => {
 
             const isError = Boolean(generalError) || authError || userDataError;
 
-            console.log({ generalError, authError, userDataError });
-
             if (prevIsError !== isError) {
                 this.setState({ showError: isError });
             }
@@ -35,7 +33,6 @@ const withErrorHandler = (WrappedComponent, axios) => {
             this.resInterceptor = axios.interceptors.response.use(
                 (res) => res,
                 (error) => {
-                    console.log('witherrorhandlerError', error.message);
                     this.setState({
                         gerenalError: error.message,
                         showError: true

@@ -8,7 +8,6 @@ import web from '../../assets/web.svg';
 import youtube from '../../assets/youtube.svg';
 
 const userProfile = (props) => {
-    console.log('props user', props);
     const { city, languages, social } = props;
 
     const imgsObj = {
