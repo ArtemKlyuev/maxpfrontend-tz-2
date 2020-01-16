@@ -1,10 +1,10 @@
-Тестовое задание №1. Взято из группы [https://vk.com/maxpfrontend](https://vk.com/maxpfrontend)
+Тестовое задание №2. Взято из группы [https://vk.com/maxpfrontend](https://vk.com/maxpfrontend)
 
 Само [задание](https://vk.com/@maxpfrontend-testovoe-zadanie-2)
 
 ## [Результат(демо)](https://maxpfront-tz-2.firebaseapp.com/)
 
-## Доступыне скрипты
+## Доступныее скрипты
 
 В директории проекта можно запустить
 
